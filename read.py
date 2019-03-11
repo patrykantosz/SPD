@@ -17,9 +17,9 @@ class Reader:
                 if c.isdigit():
                     if self.counter is 0:
                         self.rows = c
-                        print(self.rows + " " + c + "Gowno")
+                        print(self.rows + " " + c)
                     elif self.counter is 1:
                         self.machines = c
-                        print(self.machines + " " + c + "Dupa")
+                        print(self.machines + " " + c)
                 print(self.counter)
                 self.counter += 1
