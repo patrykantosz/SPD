@@ -14,12 +14,10 @@ class Reader:
                 if not c:
                     print("End of file")
                     break
-                if c.isdigit():
+                if c.isdigit() is True:
                     if self.counter is 0:
                         self.rows = c
-                        print(self.rows + " " + c)
                     elif self.counter is 1:
                         self.machines = c
-                        print(self.machines + " " + c)
-                print(self.counter)
-                self.counter += 1
+                    self.counter += 1
+
