@@ -7,7 +7,6 @@ class Factory:
         self.threeMachines = []
 
     def startProduction(self, reader):
-        print(reader.machines)
         if reader.machines == 2:
             for j in range(0, len(reader.machinesInFactory) - 1, 2):
                 productionLine = dataClass.TwoMachinesTask(reader.machinesInFactory[j],
