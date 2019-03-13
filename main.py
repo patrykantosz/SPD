@@ -3,11 +3,10 @@ import factory
 
 filename = input("Wpisz nazwe pliku: ")
 x = read.Reader()
-read.Reader.read(x, filename)
-print(x.counter)
-print(x.machines)
-print(x.rows)
+x.read(filename)
 
-factor = factory.Factory()
-factor.startProduction(x)
-factor.print()
+y = factory.Factory()
+
+for h in x.my_data:
+    for p in y.permute(h):
+        print(p)

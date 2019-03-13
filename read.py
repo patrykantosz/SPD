@@ -1,28 +1,13 @@
-import dataClass
-
-
 class Reader:
     def __init__(self):
-        self.counter = 0
-        self.machines = 0
+        self.cols = 0
         self.rows = 0
-        self.machinesInFactory = []
+        self.my_data = []
 
     def read(self, filename):
         with open(filename, "r") as f:
-            while True:
-                c = f.read(1)
-                if not c:
-                    print("End of file")
-                    break
-                if c.isdigit() is True:
-                    if self.counter is 0:
-                        self.rows = int(c)
-                    elif self.counter is 1:
-                        self.machines = int(c)
-                    else:
-                        self.machinesInFactory.append(int(c))
-                    self.counter += 1
-        print(len(self.machinesInFactory))
-
-
+            names_list = [l for l in (line.strip() for line in f) if l]
+        # Extract dimensions from first line. Cast values to integers from strings.
+        self.cols, self.rows = (int(val) for val in names_list[0].split())
+        # Do a double-nested list comprehension to get the rest of the data into your matrix
+        self.my_data = [[int(val) for val in line.split()] for line in names_list[1:]]

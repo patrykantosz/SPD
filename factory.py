@@ -1,31 +1,15 @@
-import dataClass
-
-
 class Factory:
     def __init__(self):
-        self.twoMachines = []
-        self.threeMachines = []
+        self.k =0
 
-    def startProduction(self, reader):
-        if reader.machines == 2:
-            for j in range(0, len(reader.machinesInFactory) - 1, 2):
-                productionLine = dataClass.TwoMachinesTask(reader.machinesInFactory[j],
-                                                           reader.machinesInFactory[j + 1])
-                self.twoMachines.append(productionLine)
-        elif reader.machines == 3:
-            for j in range(0, len(reader.machinesInFactory) - 1, 3):
-                productionLine = dataClass.ThreeMachinesTask(reader.machinesInFactory[j],
-                                                             reader.machinesInFactory[j + 1],
-                                                             reader.machinesInFactory[j + 2])
-                self.threeMachines.append(productionLine)
-
-    def print(self):
-        if len(self.twoMachines) is not 0:
-            for i in range(len(self.twoMachines)):
-                print(self.twoMachines[i].timeOnFirstMachine,
-                      self.twoMachines[i].timeOnSecondMachine)
+    def permute(self, xs, low=0):
+        if low + 1 >= len(xs):
+            yield xs
         else:
-            for i in range(len(self.threeMachines)):
-                print(self.threeMachines[i].timeOnFirstMachine,
-                      self.threeMachines[i].timeOnSecondMachine,
-                      self.threeMachines[i].timeOnThirdMachine)
+            for p in self.permute(xs, low + 1):
+                yield p
+            for i in range(low + 1, len(xs)):
+                xs[low], xs[i] = xs[i], xs[low]
+                for p in self.permute(xs, low + 1):
+                    yield p
+                xs[low], xs[i] = xs[i], xs[low]
