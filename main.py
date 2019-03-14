@@ -1,12 +1,12 @@
 import read
 import factory
 
+
 filename = input("Wpisz nazwe pliku: ")
 x = read.Reader()
 x.read(filename)
 
-y = factory.Factory()
+tab = []
 
-for h in x.my_data:
-    for p in y.permute(h):
-        print(p)
+y = factory.Factory()
+y.set_order(x.cols, x.rows, x.taski)
