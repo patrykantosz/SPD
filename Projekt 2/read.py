@@ -10,5 +10,3 @@ class Reader:
             names_list = [l for l in (line.strip() for line in f) if l]
         self.rows, self.cols = (int(val) for val in names_list[0].split())
         self.my_data = [[int(val) for val in line.split()] for line in names_list[1:]]
-        print(self.my_data)
-        print("Rows: ", self.rows, ", to drugie: ", self.cols)
