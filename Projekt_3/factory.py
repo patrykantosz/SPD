@@ -10,12 +10,6 @@ class Taski:
     def __lt__(self, other):
         return self.time < other.time
 
-
-class Neh:
-    def __init__(self):
-        self.sumed = []
-        self.first_order = []
-
     def makespan(self, sequence_order, times, number_of_machines):
         c_max = numpy.zeros((len(sequence_order) + 1, number_of_machines))
         for index in range(1, len(sequence_order) + 1):
