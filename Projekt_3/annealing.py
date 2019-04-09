@@ -2,6 +2,7 @@ import numpy
 import random
 import copy
 from math import exp
+import time
 
 class Annealing:
     def __init__(self):
@@ -31,16 +32,28 @@ class Annealing:
         new_seq[first_index], new_seq[second_index] = new_seq[second_index], new_seq[first_index]
         return new_seq
 
+    def make_random_insert(self, number_of_tasks):
+        new_seq = copy.deepcopy(self.first_seq)
+        index_to_move = random.randrange(0, number_of_tasks)
+        while(True):
+            index_where_to_move = random.randrange(0, number_of_tasks)
+            if(index_to_move != index_where_to_move):
+                break
+        new_seq.insert(index_where_to_move, new_seq.pop(index_to_move))
+        return new_seq
+
+
     def get_probability(self, pi_0, pi_prim, temperature):
         if(pi_prim < pi_0):
             return 1
         else:
             return exp((pi_0 - pi_prim) / temperature)
 
+    def get_probability_test_version(self, pi_0, pi_prim, temperature):
+            return exp((pi_0 - pi_prim) / temperature)
+
     def make_decision(self, probability):
-        #print(probability)
         tmp = random.random()
-        #print("TMP: ", tmp)
         if(probability > tmp):
             return True
         else:
@@ -49,28 +62,38 @@ class Annealing:
     def do_cooling(self, temperature, u):
         return u * temperature
 
-    def simulated_annealing(self, tasks, number_of_machines, number_of_tasks):
-        u = 0.24
+    def simulated_annealing(self, tasks, number_of_machines, number_of_tasks, type_of_random_move, u = 0.24, start_temp = 2000, stop_temp = 1, probability_version = 1, sequence = []):
+        self.first_seq = []
+        start = time.time()
         #step 1 initialization
-        self.make_natural_seq(number_of_tasks)
+        if not sequence:
+            self.make_natural_seq(number_of_tasks)
+        else:
+            self.first_seq = sequence
         pi_0 = self.makespan(self.first_seq, tasks, number_of_machines)
-        temperature = 2000
-        while(temperature > 1):
+        temperature = start_temp
+        while(temperature > stop_temp):
             #step 2 generating move
-            new_seq = self.make_random_swap(number_of_tasks)
+            if(type_of_random_move == "swap"):
+                new_seq = self.make_random_swap(number_of_tasks)
+            else:
+                new_seq = self.make_random_insert(number_of_tasks)
             pi_0 = self.makespan(self.first_seq, tasks, number_of_machines)
             pi_prim = self.makespan(new_seq, tasks, number_of_machines)
 
-            print("PI0 = ", pi_0, " PI_PRIM = ", pi_prim)
-
             #step 3 do or not do
-            if self.make_decision(self.get_probability(pi_0, pi_prim, temperature)):
+            if probability_version == 1:
+                probability = self.get_probability(pi_0, pi_prim, temperature)
+            else:
+                probability = self.get_probability_test_version(pi_0, pi_prim, temperature)
+            if self.make_decision(probability):
                 self.first_seq = copy.deepcopy(new_seq)
-                print("Zrobił")
 
             #step 4 cooling
             temperature -= self.do_cooling(temperature, u)
-        print("Finally: ", self.first_seq, " czas: ", self.makespan(self.first_seq, tasks, number_of_machines))
+        stop = time.time()
+        return self.makespan(self.first_seq, tasks, number_of_machines), (stop-start)
+
 
 
 
