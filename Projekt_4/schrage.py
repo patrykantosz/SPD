@@ -3,7 +3,6 @@ import task_class
 
 class Schrage:
     def __init__(self, tasks):
-        self.i = 0
         self.sigma = []
         self.sorted_tasks = []
         self.unsorted_tasks = self.convert_tasks(tasks)
@@ -32,7 +31,7 @@ class Schrage:
 
     def do_schrage(self):
         j = None
-        while self.sorted_tasks or self.unsorted_task:
+        while self.sorted_tasks or self.unsorted_tasks:
             while self.unsorted_tasks and (min(self.extract_r(self.unsorted_tasks)) <= self.t):
                 tmp_list = self.extract_r(self.unsorted_tasks)
                 j = tmp_list.index(min(tmp_list))
@@ -43,6 +42,5 @@ class Schrage:
                 qs = self.extract_q(self.sorted_tasks)
                 j = qs.index(max(qs))
                 self.sigma.append(self.sorted_tasks.pop(j))
-                self.i += 1
-                self.t += self.table_of_converted_tasks[j].times[1]
+                self.t += self.sigma[-1].times[1]
         return self.sigma

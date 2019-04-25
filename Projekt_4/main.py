@@ -5,7 +5,10 @@ x = read.Reader()
 x.read("in50.txt")
 y = schrage.Schrage(x.my_data)
 
-tmp = [[1, 2, 3], [5, 432, 567], [1, 3, 5]]
+tmp = []
 
 x.read("in50.txt")
 sigma = y.do_schrage()
+for i in sigma:
+    tmp.append(i.id)
+print(tmp)
