@@ -91,6 +91,7 @@ def do_carlier(carlier_object):
         carlier_object.tasks[carlier_object.pi[carlier_object.c].id].times[0], r_k + p_k)
     carlier_object.LB = schrage.do_schrage_pmtn(carlier_object.tasks)[0]
 
+    # step 16 new LB
     h_k_c, r_k_c, p_k_c, q_k_c = calc_k(carlier_object, K_)
     carlier_object.LB = max(h_k, h_k_c, carlier_object.LB)
 
@@ -104,17 +105,23 @@ def do_carlier(carlier_object):
     # remember tasks[c].times[2]
     old_q_pi = copy.deepcopy(carlier_object.pi[carlier_object.c].times[2])
 
+    # new q time for tasks[c].times[2]
     carlier_object.tasks[carlier_object.pi[carlier_object.c].id].times[2] = max(
         carlier_object.tasks[carlier_object.pi[carlier_object.c].id].times[2],
-        q_k + p_k)  # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        q_k + p_k)
 
+    # step 22 new LB
     carlier_object.LB = schrage.do_schrage_pmtn(carlier_object.tasks)[0]
 
+    # step 23 max LB
     h_k_c, r_k_c, p_k_c, q_k_c = calc_k(carlier_object, K_)
     carlier_object.LB = max(h_k, h_k_c, carlier_object.LB)
 
+    # step 24 right loop
     if carlier_object.LB < carlier_object.UB:
         do_carlier(carlier_object)
+
+    # step 27 restore tasks[c].times[2]
     carlier_object.tasks[carlier_object.pi[carlier_object.c].id].times[2] = old_q_pi
 
     return carlier_object.U
